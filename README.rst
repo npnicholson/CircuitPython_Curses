@@ -1,7 +1,7 @@
 Introduction
 ============
 
-.. image:: https://readthedocs.org/projects/circuitpython-circuitpython-curses/badge/?version=latest
+.. image:: https://readthedocs.org/projects/circuitpython-curses/badge/?version=latest
     :target: https://circuitpython.readthedocs.io/projects/curses/en/latest/
     :alt: Documentation Status
 
@@ -9,8 +9,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://github.com/npnicholson/Circuitpython_CircuitPython_curses/workflows/Build%20CI/badge.svg
-    :target: https://github.com/npnicholson/Circuitpython_CircuitPython_curses/actions
+.. image:: https://github.com/npnicholson/CircuitPython_curses/workflows/Build%20CI/badge.svg
+    :target: https://github.com/npnicholson/CircuitPython_curses/actions
     :alt: Build Status
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
@@ -39,17 +39,17 @@ Installing from PyPI
    If the library is not planned for PyPI, remove the entire 'Installing from PyPI' section.
 
 On supported GNU/Linux systems like the Raspberry Pi, you can install the driver locally `from
-PyPI <https://pypi.org/project/adafruit-circuitpython-curses/>`_. To install for current user:
+PyPI <https://pypi.org/project/circuitpython-curses/>`_. To install for current user:
 
 .. code-block:: shell
 
-    pip3 install adafruit-circuitpython-curses
+    pip3 install circuitpython-curses
 
 To install system-wide (this may be required in some cases):
 
 .. code-block:: shell
 
-    sudo pip3 install adafruit-circuitpython-curses
+    sudo pip3 install circuitpython-curses
 
 To install in a virtual environment in your current project:
 
@@ -58,7 +58,7 @@ To install in a virtual environment in your current project:
     mkdir project-name && cd project-name
     python3 -m venv .env
     source .env/bin/activate
-    pip3 install adafruit-circuitpython-curses
+    pip3 install circuitpython-curses
 
 Usage Example
 =============

@@ -60,6 +60,7 @@ class curses:
     class error(Exception):
         """ Exception raised when a curses library function returns an error.
         """
+
         pass
 
     #             y  x
@@ -103,7 +104,7 @@ class curses:
                 # Read it into the buffer
                 buf = buf + char
                 # If the char is the escape.RSP char, then we are done
-                if (char is escape.RSP):
+                if char is escape.RSP:
                     done = True
                     break
 
@@ -111,7 +112,7 @@ class curses:
             time.sleep(0.01)
 
             # If we have been waiting too long, fail
-            if (counter > 100):
+            if counter > 100:
                 raise OSError("Unable to get screen size: Timeout")
 
         escape_arguments = escape(buf).get_args()
@@ -120,12 +121,13 @@ class curses:
         # the right side without causing distortions on UNICODE characters (which have a
         # visible length of 1, but a codeunit length of 2):
         # https://stackoverflow.com/questions/30775689/python-length-of-unicode-string-confusion
-        window_size = (
-            int(escape_arguments[0]) - 1, int(escape_arguments[1])-4)
+        window_size = (int(escape_arguments[0]) - 1, int(escape_arguments[1]) - 4)
 
         # The x_pos is then adjusted to center the window on the screen
 
-        return curses.newwin(int(escape_arguments[0]), int(escape_arguments[1])-4, 0, 0)
+        return curses.newwin(
+            int(escape_arguments[0]), int(escape_arguments[1]) - 4, 0, 0
+        )
         # return window(window_size, y_pos=0, x_pos=1)
 
     @staticmethod
@@ -161,13 +163,13 @@ class curses:
 
         # Add the approperate strings to the buffer as needed to move
         # the cursor to where it needs to be
-        if (y_offset > 0):
+        if y_offset > 0:
             curses.write(escape.cud(y_offset))
-        elif (y_offset < 0):
+        elif y_offset < 0:
             curses.write(escape.cuu(-y_offset))
-        if (x_offset > 0):
+        if x_offset > 0:
             curses.write(escape.cuf(x_offset))
-        elif (x_offset < 0):
+        elif x_offset < 0:
             curses.write(escape.cub(-x_offset))
 
         # Write the buffer string plus the desired string to the
@@ -205,8 +207,7 @@ class curses:
         elif setting is 2:
             raise AttributeError("curs_set (2) [very visible] not implemented")
         else:
-            raise AttributeError(
-                "curs_set argument must be 0 or 1: " + setting)
+            raise AttributeError("curs_set argument must be 0 or 1: " + setting)
 
     @staticmethod
     def delay_output(milliseconds):
@@ -237,11 +238,10 @@ class window:
         """
 
         if not self._in_bounds(y, x, string):
-            raise curses.error(f'Out of Bounds: ({y},{x}) {self.window_size}')
+            raise curses.error(f"Out of Bounds: ({y},{x}) {self.window_size}")
             # pass
         else:
-            curses.write_pos(y + self.y_pos, x + self.x_pos,
-                             string, idnt=idnt)
+            curses.write_pos(y + self.y_pos, x + self.x_pos, string, idnt=idnt)
 
         # curses.write("\033[0;0H\033[" + str(y + self.y_pos) +
         #              "B\033[" + str(x + self.x_pos) + "C" + string)
@@ -285,14 +285,14 @@ class window:
 
         self.addstr(self.window_size[0], self.window_size[1] - 1, "┘")
 
-        for x in range(self.window_size[1]-2, 0, -1):
+        for x in range(self.window_size[1] - 2, 0, -1):
             self.addstr(self.window_size[0], x, "─")
             # time.sleep(0.005)
 
         self.addstr(self.window_size[0], 0, "└")
 
-        for y in range(self.window_size[0]-1, 0, -1):
-            self.addstr(y, 0, '│')
+        for y in range(self.window_size[0] - 1, 0, -1):
+            self.addstr(y, 0, "│")
             # time.sleep(0.025)
 
         # self.addstr(0, 0, "1")
@@ -311,16 +311,15 @@ class window:
         # for y in range(self.window_size[0]-2, 0, -1):
         #     self.addstr(y, 0, '│', idnt=2)
 
+    #      0123456789
+    #    0 ##########
+    #    1 #        #
+    #    2 #  %%%   #
+    #    3 #  %%%   #
+    #    4 ##########
 
-#      0123456789
-#    0 ##########
-#    1 #        #
-#    2 #  %%%   #
-#    3 #  %%%   #
-#    4 ##########
-
-# x_pos = 3
-# y_pos = 2
+    # x_pos = 3
+    # y_pos = 2
 
     def _in_bounds(self, y, x, string):
         if y > self.window_size[0] or y < 0:
@@ -340,7 +339,7 @@ class window:
     def getch(self):
         """ Get a character
         """
-        if (supervisor.runtime.serial_bytes_available):
+        if supervisor.runtime.serial_bytes_available:
             return sys.stdin.read(1)
         else:
             return -1
@@ -365,41 +364,41 @@ class escape:
         return self.code[-1]
 
     def get_body(self):
-        return self.code[self.code.find('[') + 1:len(self.code)-1]
+        return self.code[self.code.find("[") + 1 : len(self.code) - 1]
 
     def get_args(self):
-        return self.get_body().split(';')
+        return self.get_body().split(";")
 
     # @property
     @staticmethod
     def cuu(n):
         """ Escape to move the cursor up by n lines
         """
-        return f'\33[{n}A'
+        return f"\33[{n}A"
 
     @staticmethod
     def cud(n):
         """ Escape to move the cursor down by n lines
         """
-        return f'\33[{n}B'
+        return f"\33[{n}B"
 
     @staticmethod
     def cuf(n):
         """ Escape to move the cursor forward by n lines
         """
-        return f'\33[{n}C'
+        return f"\33[{n}C"
 
     @staticmethod
     def cub(n):
         """ Escape to move the cursor back by n lines
         """
-        return f'\33[{n}D'
+        return f"\33[{n}D"
 
     @staticmethod
     def ed(n=""):
         """ Escape to clear the display: CSI n J
         """
-        return f'\33[{n}J'
+        return f"\33[{n}J"
 
     @staticmethod
     def cup(y, x):
@@ -409,4 +408,4 @@ class escape:
         # Add one to y to account for the fact that cup 0, 0 and cup 1, 1
         # both place at the top of the screen. In order to make the top corner
         # 0, we add one to both values
-        return f'\33[{y+1};{x+1}H'
+        return f"\33[{y+1};{x+1}H"

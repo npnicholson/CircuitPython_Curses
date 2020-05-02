@@ -38,7 +38,7 @@ while not done:
         # Read it into the buffer
         buf = buf + char
         # If the char is the escape.RSP char, then we are done
-        if (char is escape.RSP):
+        if char is escape.RSP:
             done = True
             break
 
@@ -46,7 +46,7 @@ while not done:
     time.sleep(0.01)
 
     # If we have been waiting too long, fail
-    if (counter > 100):
+    if counter > 100:
         raise OSError("Unable to get screen size: Timeout")
 
 escape_arguments = escape(buf).get_args()
@@ -113,18 +113,18 @@ try:
     stdscr.addstr(10, 30, "G")  # 10, 31
     stdscr.addstr(9, 29, "H")  # 9,  30
 
-    stdscr.addstr(9, 40,  "Win: 10x20 @ 10,10")
-    stdscr.addstr(10, 42,   "#:  Wx h    x, y")
-    stdscr.addstr(11, 42,   "A:          9,10")
-    stdscr.addstr(12, 42,   "B:         10, 9")
-    stdscr.addstr(13, 42,   "C:         19, 9")
-    stdscr.addstr(14, 42,   "D:         20,10")
-    stdscr.addstr(15, 42,   "E:         20,29")
-    stdscr.addstr(16, 42,   "F:         19,30")
-    stdscr.addstr(17, 42,   "G:         10,30")
-    stdscr.addstr(18, 42,   "H:          9,29")
+    stdscr.addstr(9, 40, "Win: 10x20 @ 10,10")
+    stdscr.addstr(10, 42, "#:  Wx h    x, y")
+    stdscr.addstr(11, 42, "A:          9,10")
+    stdscr.addstr(12, 42, "B:         10, 9")
+    stdscr.addstr(13, 42, "C:         19, 9")
+    stdscr.addstr(14, 42, "D:         20,10")
+    stdscr.addstr(15, 42, "E:         20,29")
+    stdscr.addstr(16, 42, "F:         19,30")
+    stdscr.addstr(17, 42, "G:         10,30")
+    stdscr.addstr(18, 42, "H:          9,29")
 
-    stdscr.addstr(2, 3,   f'Window Size: {stdscr.getmaxyx()}')
+    stdscr.addstr(2, 3, f"Window Size: {stdscr.getmaxyx()}")
 
     stdscr.box()
 
