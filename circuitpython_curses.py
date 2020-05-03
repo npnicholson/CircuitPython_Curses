@@ -33,8 +33,8 @@ Implementation Notes
 
 **Hardware:**
 
-.. todo:: Add links to any specific hardware product page(s), or category page(s). Use unordered list & hyperlink rST
-   inline format: "* `Link Text <url>`_"
+.. todo:: Add links to any specific hardware product page(s), or category page(s). Use unordered
+   list & hyperlink rST inline format: "* `Link Text <url>`_"
 
 **Software and Dependencies:**
 
@@ -44,7 +44,6 @@ Implementation Notes
 """
 
 # imports
-
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/npnicholson/Circuitpython_Curses.git"
 
@@ -53,17 +52,18 @@ import time
 import supervisor
 
 
+# For compatability with the curses codebase, ignore this pylint error
+# pylint: disable=invalid-name
 class curses:
     """CircuitPython Curses Implementation.
     """
 
+    # For compatability with the curses codebase, ignore this pylint error
+    # pylint: disable=invalid-name
     class error(Exception):
         """ Exception raised when a curses library function returns an error.
         """
 
-        pass
-
-    #             y  x
     cursor_pos = (0, 0)
 
     def __init__(self):
@@ -121,20 +121,15 @@ class curses:
         # the right side without causing distortions on UNICODE characters (which have a
         # visible length of 1, but a codeunit length of 2):
         # https://stackoverflow.com/questions/30775689/python-length-of-unicode-string-confusion
-        window_size = (int(escape_arguments[0]) - 1, int(escape_arguments[1]) - 4)
-
-        # The x_pos is then adjusted to center the window on the screen
-
         return curses.newwin(
             int(escape_arguments[0]), int(escape_arguments[1]) - 4, 0, 0
         )
-        # return window(window_size, y_pos=0, x_pos=1)
 
     @staticmethod
     def endwin():
-        """ De-initialize the library, and return terminal to normal status. - Stub - not used for circuit python implementation
+        """ De-initialize the library, and return terminal to normal status. - Stub - not used for
+            circuit python implementation
         """
-        pass
 
     @staticmethod
     def newwin(nlines, ncols, begin_y=0, begin_x=0):
@@ -152,7 +147,7 @@ class curses:
         print(text, end="")
 
     @staticmethod
-    def write_pos(y, x, string, idnt=0):
+    def write_pos(y, x, string):
         """ Prints to the console without a newline at the specified location
         """
 
@@ -200,11 +195,11 @@ class curses:
     def curs_set(setting):
         """ Set the cursor state. visibility can be set to 0, 1, for invisible, normal.
         """
-        if setting is 0:
+        if setting == 0:
             curses.write("\33[?25l")
-        elif setting is 1:
+        elif setting == 1:
             curses.write("\33[?25h")
-        elif setting is 2:
+        elif setting == 2:
             raise AttributeError("curs_set (2) [very visible] not implemented")
         else:
             raise AttributeError("curs_set argument must be 0 or 1: " + setting)
@@ -224,6 +219,8 @@ class curses:
             sys.stdin.read(1)
 
 
+# For compatability with the curses codebase, ignore this pylint error
+# pylint: disable=invalid-name
 class window:
     """ Window objects, as returned by initscr() and newwin()
     """
@@ -233,119 +230,77 @@ class window:
         self.x_pos = x_pos
         self.y_pos = y_pos
 
-    def addstr(self, y, x, string, idnt=0):
-        """ Paint the character string str at (y, x) with attributes attr, overwriting anything previously on the display.
+    def addstr(self, y, x, string):
+        """ Paint the character string str at (y, x) with attributes attr, overwriting anything
+            previously on the display.
         """
-
         if not self._in_bounds(y, x, string):
             raise curses.error(f"Out of Bounds: ({y},{x}) {self.window_size}")
-            # pass
-        else:
-            curses.write_pos(y + self.y_pos, x + self.x_pos, string, idnt=idnt)
 
-        # curses.write("\033[0;0H\033[" + str(y + self.y_pos) +
-        #              "B\033[" + str(x + self.x_pos) + "C" + string)
-        # curses.write("\033[0;0H\033[" + str(y) +
-        #              "B\033[" + str(x) + "C" + string)
+        curses.write_pos(y + self.y_pos, x + self.x_pos, string)
 
     def box(self):
-
-        # self.addstr(0, 0, "┌")
-        # for x in range(1, self.window_size[1]-2):
-        #     self.addstr(0, x, "─")
-        #     time.sleep(0.02)
-
-        # time.sleep(0.4)
-        # self.addstr(0, self.window_size[1], "┐")
-        # time.sleep(0.4)
-        # for y in range(1, self.window_size[0] - 1):
-        #     self.addstr(y, self.window_size[1] - 1, "│")
-        #     time.sleep(0.1)
-
-        # self.addstr(self.window_size[0]-1, self.window_size[1]-2, "┘")
-        # for x in range(self.window_size[1]-3, 0, -1):
-        #     self.addstr(self.window_size[0]-1, x, "─")
-
-        # self.addstr(self.window_size[0]-1, 0, "└")
-
-        # for y in range(self.window_size[0]-2, 0, -1):
-        #     self.addstr(y, 0, '│')
-
+        """ Draw a box around the edges of the window.
+        """
         self.addstr(0, 0, "┌")
         for x in range(1, self.window_size[1]):
             self.addstr(0, x, "─")
-            # time.sleep(0.005)
 
-        # time.sleep(0.4)
         self.addstr(0, self.window_size[1] - 1, "┐")
-        # time.sleep(0.4)
         for y in range(1, self.window_size[0]):
             self.addstr(y, self.window_size[1] - 1, "│")
-            # time.sleep(0.025)
 
         self.addstr(self.window_size[0], self.window_size[1] - 1, "┘")
 
         for x in range(self.window_size[1] - 2, 0, -1):
             self.addstr(self.window_size[0], x, "─")
-            # time.sleep(0.005)
 
         self.addstr(self.window_size[0], 0, "└")
 
         for y in range(self.window_size[0] - 1, 0, -1):
             self.addstr(y, 0, "│")
-            # time.sleep(0.025)
-
-        # self.addstr(0, 0, "1")
-        # for x in range(1, self.window_size[1]-2):
-        #     self.addstr(0, x, "-")
-
-        # self.addstr(0, self.window_size[1] - 3, "2",  idnt=0)
-        # for y in range(1, self.window_size[0] - 1):
-        #     self.addstr(y, self.window_size[1] - 2, "│", idnt=2)
-
-        # self.addstr(self.window_size[0]-1, self.window_size[1]-2, "┘", idnt=2)
-        # for x in range(self.window_size[1]-3, 0, -1):
-        #     self.addstr(self.window_size[0]-1, x, "─", idnt=2)
-
-        # self.addstr(self.window_size[0]-1, 0, "└", idnt=2)
-        # for y in range(self.window_size[0]-2, 0, -1):
-        #     self.addstr(y, 0, '│', idnt=2)
-
-    #      0123456789
-    #    0 ##########
-    #    1 #        #
-    #    2 #  %%%   #
-    #    3 #  %%%   #
-    #    4 ##########
-
-    # x_pos = 3
-    # y_pos = 2
 
     def _in_bounds(self, y, x, string):
-        if y > self.window_size[0] or y < 0:
+        if (
+            y > self.window_size[0]
+            or y < 0
+            or x + len(string) > self.window_size[1]
+            or x < 0
+        ):
             return False
-        elif x + len(string) > self.window_size[1] or x < 0:
-            return False
-        else:
-            return True
+
+        return True
 
     def refresh(self):
         """ Update the display immediately. Stub - not used for circuit python implementation
         """
 
     def getmaxyx(self):
+        """ Return a tuple (y, x) of the height and width of the window.
+        """
         return (self.window_size[0] + 1, self.window_size[1])
 
+    # For compatability with the curses codebase, ignore this pylint error
+    # pylint: disable=no-self-use
     def getch(self):
-        """ Get a character
+        """ Get a character. Note that the integer returned does not have to be in ASCII range:
+            function keys, keypad keys and so on are represented by numbers higher than 255.
+            In no-delay mode, return -1 if there is no input, otherwise wait until a key is pressed.
         """
         if supervisor.runtime.serial_bytes_available:
             return sys.stdin.read(1)
-        else:
-            return -1
+
+        return -1
+
+
+# For compatability with the curses codebase, ignore this pylint error
+# pylint: disable=invalid-name
 
 
 class escape:
+    """ Class for managing ansi escape sequences
+    """
+
     ESC = "\33"
     CSI = "\33["
     RET = "\27["
@@ -361,12 +316,19 @@ class escape:
         self.code = inpt
 
     def get_command(self):
+        """ Returns the command code for the escape, which is the last charactor
+        """
         return self.code[-1]
 
     def get_body(self):
+        """ Returns the body of the excape, which is the content between '[' and the last
+            character
+        """
         return self.code[self.code.find("[") + 1 : len(self.code) - 1]
 
     def get_args(self):
+        """ Returns the arguments of the escape, as split by ';'
+        """
         return self.get_body().split(";")
 
     # @property
