@@ -29,20 +29,20 @@ try:
     # stdscr.addstr(10, 31, "@")
     # stdscr.addstr(9, 30, "@")
 
-    # for y in range(0, stdscr.getmaxyx()[0]):
-    #     for x in range(0, stdscr.getmaxyx()[1]):
-    #         stdscr.addstr(y, x, "#")
-    #         stdscr.refresh()
+    for y in range(0, STDSCR.getmaxyx()[0]):
+        for x in range(0, STDSCR.getmaxyx()[1]):
+            STDSCR.addstr(y, x, "#")
+            STDSCR.refresh()
 
-    # for y in range(0, stdscr.getmaxyx()[0]):
-    #     for x in range(0, stdscr.getmaxyx()[1]):
-    #         stdscr.addstr(y, x, ".")
-    #         stdscr.refresh()
+    for y in range(0, STDSCR.getmaxyx()[0]):
+        for x in range(0, STDSCR.getmaxyx()[1]):
+            STDSCR.addstr(y, x, ".")
+            STDSCR.refresh()
 
-    # for y in range(0, stdscr.getmaxyx()[0]):
-    #     for x in range(0, stdscr.getmaxyx()[1]):
-    #         stdscr.addstr(y, x, " ")
-    #         stdscr.refresh()
+    for y in range(0, STDSCR.getmaxyx()[0]):
+        for x in range(0, STDSCR.getmaxyx()[1]):
+            STDSCR.addstr(y, x, " ")
+            STDSCR.refresh()
 
     STDSCR.addstr(9, 10, "A")
     STDSCR.addstr(10, 9, "B")

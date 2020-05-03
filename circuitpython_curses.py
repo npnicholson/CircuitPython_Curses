@@ -344,31 +344,36 @@ class escape:
     def cuu(n):
         """ Escape to move the cursor up by n lines
         """
-        return f"\33[{n}A"
+        # return f"\33[{n}A"
+        return "\33[" + str(n) + "A"
 
     @staticmethod
     def cud(n):
         """ Escape to move the cursor down by n lines
         """
-        return f"\33[{n}B"
+        # return f"\33[{n}B"
+        return "\33[" + str(n) + "B"
 
     @staticmethod
     def cuf(n):
         """ Escape to move the cursor forward by n lines
         """
-        return f"\33[{n}C"
+        # return f"\33[{n}C"
+        return "\33[" + str(n) + "C"
 
     @staticmethod
     def cub(n):
         """ Escape to move the cursor back by n lines
         """
-        return f"\33[{n}D"
+        # return f"\33[{n}D"
+        return "\33[" + str(n) + "D"
 
     @staticmethod
     def ed(n=""):
         """ Escape to clear the display: CSI n J
         """
-        return f"\33[{n}J"
+        # return f"\33[{n}J"
+        return "\33[" + str(n) + "J"
 
     @staticmethod
     def cup(y, x):
@@ -378,4 +383,5 @@ class escape:
         # Add one to y to account for the fact that cup 0, 0 and cup 1, 1
         # both place at the top of the screen. In order to make the top corner
         # 0, we add one to both values
-        return f"\33[{y+1};{x+1}H"
+        # return f"\33[{y+1};{x+1}H"
+        return "\33[" + str(y + 1) + ";" + str(x + 1) + "H"
