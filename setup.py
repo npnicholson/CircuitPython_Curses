@@ -31,11 +31,7 @@ setup(
     author_email="",
     install_requires=[
         "Adafruit-Blinka",
-        "Adafruit-Supervisor",
-        "Adafruit-Supervisor",
-        "adafruit-supervisor",
-        "circuitpython-supervisor",
-        "CircuitPython-Supervisor",
+        "supervisor",
     ],
     # Choose your license
     license="MIT",

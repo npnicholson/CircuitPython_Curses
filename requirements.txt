@@ -1,5 +1,2 @@
 Adafruit-Blinka
-Adafruit-Supervisor
-adafruit-supervisor
-circuitpython-supervisor
-CircuitPython-Supervisor
+supervisor
