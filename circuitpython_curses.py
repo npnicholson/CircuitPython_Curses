@@ -235,7 +235,15 @@ class window:
             previously on the display.
         """
         if not self._in_bounds(y, x, string):
-            raise curses.error(f"Out of Bounds: ({y},{x}) {self.window_size}")
+            # raise curses.error(f"Out of Bounds: ({y},{x}) {self.window_size}")
+            raise curses.error(
+                "Out of Bounds: ("
+                + str(y)
+                + ","
+                + str(x)
+                + ") "
+                + str(self.window_size)
+            )
 
         curses.write_pos(y + self.y_pos, x + self.x_pos, string)
 
