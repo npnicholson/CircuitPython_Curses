@@ -29,7 +29,7 @@ setup(
     # Author details
     author="Norris Nicholson",
     author_email="",
-    install_requires=["Adafruit-Blinka", "circuitpython",],
+    install_requires=["Adafruit-Blinka", "Adafruit-CircuitPython",],
     # Choose your license
     license="MIT",
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
