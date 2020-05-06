@@ -463,8 +463,6 @@ class window:
                     else:  # bg
                         prefix = "\33[48;5;" + str(bg) + "m"
 
-        # TODO: Wrapping does not seem to work with special characters (eg: ▆)
-
         # Split the input string by newline characters and grab each split string as an individual.
         # If there are no newline characters in the string, the for loop will run only once
         lst = string.split("\n")
@@ -473,10 +471,10 @@ class window:
 
             # While this split string is longer than the window, starting at the given x position,
             # cut it into smaller strings and simulate a newline
-            while x + len(line.encode()) > self.window_size[1]:
+            while x + len(line) > self.window_size[1]:
 
                 # Cut the string so that it will fit in this line
-                self._addstr(y, x, line[0 : self.window_size[1] - x], prefix=prefix)
+                self._addstr(y, x, prefix, line[0 : self.window_size[1] - x], None)
 
                 # Set the prefix to an empty string because we have already written it to the
                 # screen
@@ -496,10 +494,7 @@ class window:
             # replicate curses
             if idx < lst_len:
                 self._addstr(
-                    y,
-                    x,
-                    line + " " * (self.window_size[1] - len(line.encode())),
-                    prefix=prefix,
+                    y, x, prefix, line + " " * (self.window_size[1] - len(line)), None,
                 )
 
                 # Set the prefix to an empty string because we have already written it to the
@@ -513,20 +508,19 @@ class window:
             else:
                 # Since this will always be run at least once, at the very end of the string, we
                 # add the postfix here
-                self._addstr(y, x, line, prefix=prefix, postfix=postfix)
+                self._addstr(y, x, prefix, line, postfix)
 
                 # Don't need to worry about clearing prefix or postfix here because this is the
                 # end of the loop
 
-    def _addstr(self, y, x, string, prefix=None, postfix=None):
+    def _addstr(self, y, x, prefix, string, postfix):
         """ Internal function for writing to the screen. Checks to ensure that the given string
             will not exceed the boundries of the window.
 
             Also checks to ensure that the last character in the window is not written to. This 
             seems to be a quirk with curses that needs to be emulated.
         """
-
-        str_len = len(string.encode())
+        str_len = len(string)
 
         # Ensure that we have not written up to the last character in the window. This is
         # a quirk with curses that needs to be replicated
@@ -546,6 +540,8 @@ class window:
                 + str(y)
                 + ","
                 + str(x)
+                + "->"
+                + str(str_len)
                 + ") "
                 + str(self.window_size)
             )
@@ -555,9 +551,9 @@ class window:
             raise curses.error("Can't write to the last cell in a window")
 
         # Write the string to the screen
-        self._write_pos(y, x, string, prefix=prefix, postfix=postfix)
+        self._write_pos(y, x, prefix, string, postfix)
 
-    def _write_pos(self, y, x, string, prefix=None, postfix=None):
+    def _write_pos(self, y, x, prefix, string, postfix):
         """ Internal function for executing the curses.write_pos command, with the correct
             offset based on this window's position.
 
@@ -571,23 +567,25 @@ class window:
     def box(self):
         """ Draw a box around the edges of the window.
         """
-        self._write_pos(0, 0, "┌")  # ┌╭
+        self._write_pos(0, 0, None, "┌", None)  # ┌╭
         for x in range(1, self.window_size[1]):
-            self._write_pos(0, x, "─")
+            self._write_pos(0, x, None, "─", None)
 
-        self._write_pos(0, self.window_size[1] - 1, "┐")  # ┐╮
+        self._write_pos(0, self.window_size[1] - 1, None, "┐", None)  # ┐╮
         for y in range(1, self.window_size[0]):
-            self._write_pos(y, self.window_size[1] - 1, "│")
+            self._write_pos(y, self.window_size[1] - 1, None, "│", None)
 
-        self._write_pos(self.window_size[0], self.window_size[1] - 1, "┘")  # ┘╯
+        self._write_pos(
+            self.window_size[0], self.window_size[1] - 1, None, "┘", None
+        )  # ┘╯
 
         for x in range(self.window_size[1] - 2, 0, -1):
-            self._write_pos(self.window_size[0], x, "─")
+            self._write_pos(self.window_size[0], x, None, "─", None)
 
-        self._write_pos(self.window_size[0], 0, "└")  # └╰
+        self._write_pos(self.window_size[0], 0, None, "└", None)  # └╰
 
         for y in range(self.window_size[0] - 1, 0, -1):
-            self._write_pos(y, 0, "│")
+            self._write_pos(y, 0, None, "│", None)
 
     def refresh(self):
         """ Update the display immediately. Stub - not used for circuit python implementation

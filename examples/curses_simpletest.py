@@ -39,20 +39,20 @@ try:
     curses.init_pair(4, -1, -1)
     curses.init_pair(5, curses.COLOR_RED, -1)
 
-    # for y in range(0, STDSCR.getmaxyx()[0]):
-    #     for x in range(0, STDSCR.getmaxyx()[1] - 1):
-    #         STDSCR.addstr(y, x, "#")
-    #         STDSCR.refresh()
+    for y in range(0, STDSCR.getmaxyx()[0]):
+        for x in range(0, STDSCR.getmaxyx()[1] - 1):
+            STDSCR.addstr(y, x, "#")
+            STDSCR.refresh()
 
-    # for y in range(0, STDSCR.getmaxyx()[0]):
-    #     for x in range(0, STDSCR.getmaxyx()[1] - 1):
-    #         STDSCR.addstr(y, x, ".")
-    #         STDSCR.refresh()
+    for y in range(0, STDSCR.getmaxyx()[0]):
+        for x in range(0, STDSCR.getmaxyx()[1] - 1):
+            STDSCR.addstr(y, x, ".")
+            STDSCR.refresh()
 
-    # for y in range(0, STDSCR.getmaxyx()[0]):
-    #     for x in range(0, STDSCR.getmaxyx()[1] - 1):
-    #         STDSCR.addstr(y, x, " ")
-    #         STDSCR.refresh()
+    for y in range(0, STDSCR.getmaxyx()[0]):
+        for x in range(0, STDSCR.getmaxyx()[1] - 1):
+            STDSCR.addstr(y, x, " ")
+            STDSCR.refresh()
 
     STDSCR.addstr(9, 10, "A")
     STDSCR.addstr(10, 9, "B")
@@ -117,38 +117,37 @@ try:
     #     "0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789a",
     # )
 
+    # WIN3.addstr(
+    #     0,
+    #     0,
+    #     "0123456789abcdefghijklmnopqrstuvwxyz012345678uvwxyz\nThis is a test! and so is \nthis and bla",
+    #     curses.color_pair(5),
+    # )
+
     WIN3.addstr(
+        0, 0, "▆" * 35 + "\n" + "▆" * 20, curses.color_pair(5),
+    )
+
+    WIN3.refresh()
+
+    WIN4 = curses.newwin(6, 20, 32, 10)
+    WIN4.box()
+
+    WIN4.addstr(
         0,
         0,
         "0123456789abcdefghijklmnopqrstuvwxyz012345678uvwxyz\nThis is a test! and so is \nthis and bla",
         curses.color_pair(5),
     )
 
-    # WIN3.addstr(
-    #     0, 0, "▆" * 1,
-    # )
+    WIN4.refresh()
 
-    # WIN3.addstr(5, 19, "#")
-
-    WIN3.refresh()
-
-    # STDSCR.addstr(4, 3, f"Window Pos: {WIN.getbegyx()}")
-
+    _color = 0
     for y in range(0, STDSCR.getmaxyx()[0]):
-        for x in range(81, STDSCR.getmaxyx()[1] - 2):
-            STDSCR.addstr(y, x, "#", (x * y) % 15)
+        for x in range(80, STDSCR.getmaxyx()[1] - 2):
+            STDSCR.addstr(y, x, "#", (_color % 256))
+            _color = _color + 1
             STDSCR.refresh()
-
-    # for y in range(0, STDSCR.getmaxyx()[0], 1):
-    #     STDSCR.addstr(y, 3, str(y))
-    #     STDSCR.refresh()
-
-    # for x in range(0, STDSCR.getmaxyx()[1], 1):
-    #     STDSCR.addstr(3, x, str(x % 10))
-    #     STDSCR.refresh()
-
-    # curses.init_pair(1, curses.red, 120)
-    # print(curses.color_pair(1)
 
 
 finally:
